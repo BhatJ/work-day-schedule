@@ -125,5 +125,6 @@ $(function () {
   // Load saved events
   loadSavedEvents();
 
-  // TODO: Add code to display the current date in the header of the page.
+  // Display today's date in the header
+  $('#currentDay').text(today.format('dddd, MMMM D'));
 });
