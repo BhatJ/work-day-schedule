@@ -55,6 +55,7 @@ var businessHours = [
  */
 function renderBusinessHours() {
   var schedulerBdy = $('#scheduler');
+
   for (var i = 0; i < businessHours.length; i++)
   {
     var hourDiv = $("<div id=\"" + businessHours[i].id + "\" class=\"row time-block\">")
@@ -62,10 +63,7 @@ function renderBusinessHours() {
     hourDiv.append($("<textarea class=\"col-8 col-md-10 description\" rows=\"3\"> </textarea>"));
     hourDiv.append($("<button class=\"btn saveBtn col-2 col-md-1\" aria-label=\"save\"><i class=\"fas fa-save\" aria-hidden=\"true\"></i></button>"));
     schedulerBdy.append(hourDiv);
-    localStorage.setItem(businessHours[i].id, '');
   }
-
-  console.log("renderBusinessHours() executed");
 }
 
 /*
@@ -89,14 +87,25 @@ function styleBusinessHours(hour) {
       hourEl.addClass('future');
     }
   }
+}
 
-  console.log("styleBusinessHours() executed");
+/*
+ * A function to load saved events from local storage.
+ * Each hour element has an associated 
+ */
+function loadSavedEvents() {
+  for (var i = 0; i < businessHours.length; i++) {
+    var textAreaEl = $("#" + businessHours[i].id).children()[1];
+
+    textAreaEl.value = localStorage.getItem(businessHours[i].id);
+  }
 }
 
 $(function () {
 
   // Use Day.js to get the current hour of the day on 24-hr format
-  var currentHour = dayjs().format('H');
+  var today = dayjs();
+  var currentHour = today.format('H');
 
   // Render the business hour elements. 
   renderBusinessHours();
@@ -113,13 +122,8 @@ $(function () {
     localStorage.setItem(hourId, workEvent);
   });
   
-  
+  // Load saved events
+  loadSavedEvents();
 
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
   // TODO: Add code to display the current date in the header of the page.
-
-
 });
